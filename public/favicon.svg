@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="apple-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="50%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#d946ef" />
+    </linearGradient>
+    <linearGradient id="glow-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <!-- Background Rounded Squircle (Apple Icon Spec) -->
+  <rect width="512" height="512" rx="128" fill="url(#apple-grad)" />
+  <!-- Gloss Overlay -->
+  <rect width="512" height="256" rx="128" fill="url(#glow-grad)" />
+  <!-- Film Reel & Pulse Emblem -->
+  <g transform="translate(106, 106) scale(0.6)">
+    <path fill="#ffffff" fill-rule="evenodd" clip-rule="evenodd" d="M250 50C139.543 50 50 139.543 50 250C50 360.457 139.543 450 250 450C360.457 450 450 360.457 450 250C450 139.543 360.457 50 250 50ZM250 120C178.203 120 120 178.203 120 250C120 321.797 178.203 380 250 380C380 321.797 380 178.203 321.797 120 250 120Z"/>
+    <path stroke="#ffffff" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" d="M150 250H195L220 180L255 310L285 220L305 250H350" />
+  </g>
+</svg>

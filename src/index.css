@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+:root {
+  /* Apple Light Mode Theme Tokens (Apple HIG) */
+  --background: hsl(240 6% 96%); /* #f4f4f7 */
+  --foreground: hsl(240 10% 8%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(240 10% 8%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(240 10% 8%);
+  
+  /* Apple Primary: Rich Violet Indigo Gradient Accent */
+  --primary: hsl(252 87% 62%); /* Apple TV+ Deep Indigo Violet */
+  --primary-foreground: hsl(0 0% 100%);
+  
+  --secondary: hsl(240 5% 92%);
+  --secondary-foreground: hsl(240 10% 8%);
+  --muted: hsl(240 5% 93%);
+  --muted-foreground: hsl(240 4% 46%);
+  --accent: hsl(252 87% 96%);
+  --accent-foreground: hsl(252 87% 45%);
+  --destructive: hsl(346 84% 61%);
+  --destructive-foreground: hsl(0 0% 98%);
+  --border: hsl(240 5% 88%);
+  --input: hsl(240 5% 88%);
+  --ring: hsl(252 87% 62%);
+  --radius: 0.85rem;
+}
+
+.dark {
+  /* Apple Dark Mode Theme Tokens (Apple HIG) */
+  --background: hsl(240 10% 4%); /* Apple Dark #09090b */
+  --foreground: hsl(0 0% 98%);
+  --card: hsl(240 6% 9%); /* Apple Card #141417 */
+  --card-foreground: hsl(0 0% 98%);
+  --popover: hsl(240 6% 8%);
+  --popover-foreground: hsl(0 0% 98%);
+  
+  /* Apple Dark Primary */
+  --primary: hsl(252 87% 65%); /* Electric Violet Indigo */
+  --primary-foreground: hsl(0 0% 100%);
+  
+  --secondary: hsl(240 5% 15%);
+  --secondary-foreground: hsl(0 0% 98%);
+  --muted: hsl(240 5% 13%);
+  --muted-foreground: hsl(240 5% 65%);
+  --accent: hsl(252 87% 15%);
+  --accent-foreground: hsl(252 87% 85%);
+  --destructive: hsl(346 84% 55%);
+  --destructive-foreground: hsl(0 0% 98%);
+  --border: hsl(240 5% 16%);
+  --input: hsl(240 5% 16%);
+  --ring: hsl(252 87% 65%);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+  button, [role="button"], a, select, summary, .cursor-pointer {
+    cursor: pointer !important;
+  }
+}
+
+/* Apple Frosted Glass Utilities */
+.glass-panel {
+  background: var(--card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+}
+
+.glass-nav {
+  background: rgba(244, 244, 247, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+}
+
+.dark .glass-nav {
+  background: rgba(9, 9, 11, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Apple Liquid Button Styles */
+.btn-apple-primary {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.35);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-apple-primary:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 6px 20px 0 rgba(139, 92, 246, 0.45);
+}
+
+/* Apple Segmented Control Container */
+.apple-segmented-list {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  background: var(--muted);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Custom Minimal Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
