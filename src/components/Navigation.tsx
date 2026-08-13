@@ -69,14 +69,13 @@ export const Navigation: React.FC<NavigationProps> = ({
           </div>
 
           {/* Desktop Nav Segmented Controls */}
-          <nav className="hidden md:flex items-center apple-segmented-list">
+          <nav className="hidden md:inline-flex items-center apple-segmented-list">
             <button
               onClick={() => onTabChange('home')}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                currentTab === 'home'
-                  ? 'bg-card text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${currentTab === 'home'
+                ? 'bg-card text-foreground shadow-sm'
+                : 'text-muted-foreground hover:text-foreground'
+                }`}
             >
               <Home className="h-3.5 w-3.5" /> Home
             </button>
@@ -84,11 +83,10 @@ export const Navigation: React.FC<NavigationProps> = ({
             {isAuthenticated && (
               <button
                 onClick={() => onTabChange('lists')}
-                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                  currentTab === 'lists'
-                    ? 'bg-card text-foreground shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
+                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${currentTab === 'lists'
+                  ? 'bg-card text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+                  }`}
               >
                 <ListOrdered className="h-3.5 w-3.5" /> My Lists
               </button>
@@ -96,11 +94,10 @@ export const Navigation: React.FC<NavigationProps> = ({
 
             <button
               onClick={() => onTabChange('discover')}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                currentTab === 'discover'
-                  ? 'bg-card text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${currentTab === 'discover'
+                ? 'bg-card text-foreground shadow-sm'
+                : 'text-muted-foreground hover:text-foreground'
+                }`}
             >
               <Sparkles className="h-3.5 w-3.5" /> Discover
             </button>
@@ -180,11 +177,10 @@ export const Navigation: React.FC<NavigationProps> = ({
         <div className="flex items-center justify-around">
           <button
             onClick={() => onTabChange('home')}
-            className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-[10px] font-medium transition-all cursor-pointer ${
-              currentTab === 'home'
-                ? 'text-primary font-bold bg-primary/10'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
+            className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-[10px] font-medium transition-all cursor-pointer ${currentTab === 'home'
+              ? 'text-primary font-bold bg-primary/10'
+              : 'text-muted-foreground hover:text-foreground'
+              }`}
           >
             <Home className="h-4 w-4" />
             <span>Home</span>
@@ -193,11 +189,10 @@ export const Navigation: React.FC<NavigationProps> = ({
           {isAuthenticated && (
             <button
               onClick={() => onTabChange('lists')}
-              className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-[10px] font-medium transition-all cursor-pointer ${
-                currentTab === 'lists'
-                  ? 'text-primary font-bold bg-primary/10'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+              className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-[10px] font-medium transition-all cursor-pointer ${currentTab === 'lists'
+                ? 'text-primary font-bold bg-primary/10'
+                : 'text-muted-foreground hover:text-foreground'
+                }`}
             >
               <ListOrdered className="h-4 w-4" />
               <span>Lists</span>
@@ -206,11 +201,10 @@ export const Navigation: React.FC<NavigationProps> = ({
 
           <button
             onClick={() => onTabChange('discover')}
-            className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-[10px] font-medium transition-all cursor-pointer ${
-              currentTab === 'discover'
-                ? 'text-primary font-bold bg-primary/10'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
+            className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-[10px] font-medium transition-all cursor-pointer ${currentTab === 'discover'
+              ? 'text-primary font-bold bg-primary/10'
+              : 'text-muted-foreground hover:text-foreground'
+              }`}
           >
             <Sparkles className="h-4 w-4" />
             <span>Discover</span>

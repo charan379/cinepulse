@@ -2,17 +2,19 @@
 
 :root {
   /* Apple Light Mode Theme Tokens (Apple HIG) */
-  --background: hsl(240 6% 96%); /* #f4f4f7 */
+  --background: hsl(240 6% 96%);
+  /* #f4f4f7 */
   --foreground: hsl(240 10% 8%);
   --card: hsl(0 0% 100%);
   --card-foreground: hsl(240 10% 8%);
   --popover: hsl(0 0% 100%);
   --popover-foreground: hsl(240 10% 8%);
-  
+
   /* Apple Primary: Rich Violet Indigo Gradient Accent */
-  --primary: hsl(252 87% 62%); /* Apple TV+ Deep Indigo Violet */
+  --primary: hsl(252 87% 62%);
+  /* Apple TV+ Deep Indigo Violet */
   --primary-foreground: hsl(0 0% 100%);
-  
+
   --secondary: hsl(240 5% 92%);
   --secondary-foreground: hsl(240 10% 8%);
   --muted: hsl(240 5% 93%);
@@ -29,17 +31,20 @@
 
 .dark {
   /* Apple Dark Mode Theme Tokens (Apple HIG) */
-  --background: hsl(240 10% 4%); /* Apple Dark #09090b */
+  --background: hsl(240 10% 4%);
+  /* Apple Dark #09090b */
   --foreground: hsl(0 0% 98%);
-  --card: hsl(240 6% 9%); /* Apple Card #141417 */
+  --card: hsl(240 6% 9%);
+  /* Apple Card #141417 */
   --card-foreground: hsl(0 0% 98%);
   --popover: hsl(240 6% 8%);
   --popover-foreground: hsl(0 0% 98%);
-  
+
   /* Apple Dark Primary */
-  --primary: hsl(252 87% 65%); /* Electric Violet Indigo */
+  --primary: hsl(252 87% 65%);
+  /* Electric Violet Indigo */
   --primary-foreground: hsl(0 0% 100%);
-  
+
   --secondary: hsl(240 5% 15%);
   --secondary-foreground: hsl(0 0% 98%);
   --muted: hsl(240 5% 13%);
@@ -81,6 +86,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
   body {
     background-color: var(--background);
     color: var(--foreground);
@@ -89,7 +95,13 @@
     overflow-x: hidden;
     transition: background-color 0.25s ease, color 0.25s ease;
   }
-  button, [role="button"], a, select, summary, .cursor-pointer {
+
+  button,
+  [role="button"],
+  a,
+  select,
+  summary,
+  .cursor-pointer {
     cursor: pointer !important;
   }
 }
@@ -123,6 +135,7 @@
   box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.35);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 .btn-apple-primary:hover {
   filter: brightness(1.08);
   box-shadow: 0 6px 20px 0 rgba(139, 92, 246, 0.45);
@@ -130,7 +143,6 @@
 
 /* Apple Segmented Control Container */
 .apple-segmented-list {
-  display: inline-flex;
   align-items: center;
   gap: 2px;
   padding: 3px;
@@ -144,13 +156,16 @@
   width: 5px;
   height: 5px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--border);
   border-radius: 9999px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--muted-foreground);
 }
