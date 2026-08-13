@@ -47,12 +47,16 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
           {/* Header Branding */}
           <SheetHeader>
             <div className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 via-violet-600 to-pink-500 text-white shadow-md">
-                <Film className="h-5 w-5" />
-              </div>
+              <img
+                src="/icon.svg"
+                alt="CinePulse Logo"
+                className="h-9 w-9 rounded-xl shadow-md shadow-purple-500/20 object-cover"
+              />
               <div className="text-left">
-                <SheetTitle className="text-base font-extrabold text-foreground">CinePulse</SheetTitle>
-                <SheetDescription className="text-[11px]">Movie & TV List Manager</SheetDescription>
+                <SheetTitle className="text-base font-black tracking-wider uppercase bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text text-transparent">
+                  Cine<span className="bg-gradient-to-r from-violet-500 via-purple-500 to-pink-500 bg-clip-text text-transparent font-extrabold">Pulse</span>
+                </SheetTitle>
+                <SheetDescription className="text-[10px]">Movie & TV List Manager</SheetDescription>
               </div>
             </div>
           </SheetHeader>

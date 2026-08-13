@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { getDefaultUserRegion } from '@/lib/geo-region';
 
 export interface FilterState {
   mediaType: 'all' | 'movie' | 'tv';
@@ -21,8 +22,8 @@ const DEFAULT_FILTERS: FilterState = {
   personId: null,
   personName: '',
   originalLanguage: '',
-  region: 'US',
-  certificationCountry: 'US',
+  region: getDefaultUserRegion(),
+  certificationCountry: getDefaultUserRegion(),
   certification: '',
   sortBy: 'popularity.desc',
   searchQuery: '',

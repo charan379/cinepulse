@@ -31,6 +31,9 @@ export const QuickMediaActions: React.FC<QuickMediaActionsProps> = ({
   variant = 'compact',
 }) => {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isPendingWatchlist, setIsPendingWatchlist] = useState(false);
+  const [isPendingFavorite, setIsPendingFavorite] = useState(false);
+  const [isPendingSeen, setIsPendingSeen] = useState(false);
 
   // Account state query (is this movie in user's watchlist, favorite, or rated/seen)
   const { data: accountState, isLoading, refetch } = useQuery({
@@ -46,34 +49,43 @@ export const QuickMediaActions: React.FC<QuickMediaActionsProps> = ({
 
   const handleWatchlistClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!sessionId) return;
+    if (!sessionId || isPendingWatchlist) return;
+    setIsPendingWatchlist(true);
     try {
       await onToggleWatchlist({ mediaType, mediaId, watchlist: !isWatchlist });
-      refetch();
+      await refetch();
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsPendingWatchlist(false);
     }
   };
 
   const handleFavoriteClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!sessionId) return;
+    if (!sessionId || isPendingFavorite) return;
+    setIsPendingFavorite(true);
     try {
       await onToggleFavorite({ mediaType, mediaId, favorite: !isFavorite });
-      refetch();
+      await refetch();
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsPendingFavorite(false);
     }
   };
 
   const handleSeenClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!sessionId) return;
+    if (!sessionId || isPendingSeen) return;
+    setIsPendingSeen(true);
     try {
       await onToggleSeen({ mediaType, mediaId, isSeen: !isSeen });
-      refetch();
+      await refetch();
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsPendingSeen(false);
     }
   };
 
@@ -90,7 +102,18 @@ export const QuickMediaActions: React.FC<QuickMediaActionsProps> = ({
     );
   }
 
-  const mediaItemData = { id: mediaId, media_type: mediaType, title: mediaTitle, name: mediaTitle, overview: '', poster_path: null, backdrop_path: null, popularity: 0, vote_average: 0, vote_count: 0 };
+  const mediaItemData = {
+    id: mediaId,
+    media_type: mediaType,
+    title: mediaTitle,
+    name: mediaTitle,
+    overview: '',
+    poster_path: null,
+    backdrop_path: null,
+    popularity: 0,
+    vote_average: 0,
+    vote_count: 0,
+  };
 
   if (variant === 'full') {
     return (
@@ -102,9 +125,14 @@ export const QuickMediaActions: React.FC<QuickMediaActionsProps> = ({
                 size={size}
                 variant={isSeen ? 'glow' : 'outline'}
                 onClick={handleSeenClick}
+                disabled={isPendingSeen}
                 className={cn(isSeen && 'from-cyan-600 to-blue-600 shadow-cyan-500/25')}
               >
-                <Eye className={cn("h-4 w-4", isSeen && "fill-current")} />
+                {isPendingSeen ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Eye className={cn('h-4 w-4', isSeen && 'fill-current')} />
+                )}
                 <span>{isSeen ? 'Watched' : 'Mark Watched'}</span>
               </Button>
 
@@ -112,9 +140,14 @@ export const QuickMediaActions: React.FC<QuickMediaActionsProps> = ({
                 size={size}
                 variant={isWatchlist ? 'default' : 'outline'}
                 onClick={handleWatchlistClick}
+                disabled={isPendingWatchlist}
                 className={cn(isWatchlist && 'bg-indigo-600 hover:bg-indigo-500 text-white')}
               >
-                <Bookmark className={cn("h-4 w-4", isWatchlist && "fill-current")} />
+                {isPendingWatchlist ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Bookmark className={cn('h-4 w-4', isWatchlist && 'fill-current')} />
+                )}
                 <span>{isWatchlist ? 'In Watchlist' : 'Watchlist'}</span>
               </Button>
 
@@ -122,9 +155,14 @@ export const QuickMediaActions: React.FC<QuickMediaActionsProps> = ({
                 size={size}
                 variant={isFavorite ? 'destructive' : 'outline'}
                 onClick={handleFavoriteClick}
+                disabled={isPendingFavorite}
                 className={cn(isFavorite && 'bg-pink-600 hover:bg-pink-500 text-white border-pink-500/40')}
               >
-                <Heart className={cn("h-4 w-4", isFavorite && "fill-current")} />
+                {isPendingFavorite ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Heart className={cn('h-4 w-4', isFavorite && 'fill-current')} />
+                )}
                 <span>{isFavorite ? 'Favorite' : 'Favorite'}</span>
               </Button>
             </>
@@ -147,43 +185,61 @@ export const QuickMediaActions: React.FC<QuickMediaActionsProps> = ({
 
   return (
     <>
-      <div className="flex items-center gap-1 bg-black/60 backdrop-blur-md p-1 rounded-full border border-white/10" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="flex items-center gap-1 bg-black/60 backdrop-blur-md p-1 rounded-full border border-white/10"
+        onClick={(e) => e.stopPropagation()}
+      >
         {sessionId && (
           <>
             <button
               type="button"
+              disabled={isPendingSeen}
               title={isSeen ? 'Watched' : 'Mark as Seen'}
               onClick={handleSeenClick}
               className={cn(
-                "p-1.5 rounded-full transition-colors",
-                isSeen ? "bg-cyan-500 text-slate-950 font-bold" : "text-slate-300 hover:bg-white/15"
+                'p-1.5 rounded-full transition-colors disabled:opacity-50 cursor-pointer',
+                isSeen ? 'bg-cyan-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-white/15'
               )}
             >
-              <Eye className="h-3.5 w-3.5" />
+              {isPendingSeen ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Eye className="h-3.5 w-3.5" />
+              )}
             </button>
 
             <button
               type="button"
+              disabled={isPendingWatchlist}
               title={isWatchlist ? 'In Watchlist' : 'Add to Watchlist'}
               onClick={handleWatchlistClick}
               className={cn(
-                "p-1.5 rounded-full transition-colors",
-                isWatchlist ? "bg-indigo-500 text-white font-bold" : "text-slate-300 hover:bg-white/15"
+                'p-1.5 rounded-full transition-colors disabled:opacity-50 cursor-pointer',
+                isWatchlist ? 'bg-indigo-500 text-white font-bold' : 'text-slate-300 hover:bg-white/15'
               )}
             >
-              <Bookmark className="h-3.5 w-3.5" />
+              {isPendingWatchlist ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Bookmark className="h-3.5 w-3.5" />
+              )}
             </button>
 
             <button
               type="button"
+              disabled={isPendingFavorite}
               title={isFavorite ? 'Favorite' : 'Mark Favorite'}
               onClick={handleFavoriteClick}
               className={cn(
-                "p-1.5 rounded-full transition-colors",
-                isFavorite ? "bg-pink-500 text-white font-bold" : "text-slate-300 hover:bg-white/15"
+                'p-1.5 rounded-full transition-colors disabled:opacity-50 cursor-pointer',
+                isFavorite ? 'bg-pink-500 text-white font-bold' : 'text-slate-300 hover:bg-white/15'
               )}
             >
-              <Heart className="h-3.5 w-3.5" />
+              {isPendingFavorite ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Heart className="h-3.5 w-3.5" />
+              )}
             </button>
           </>
         )}
@@ -192,7 +248,7 @@ export const QuickMediaActions: React.FC<QuickMediaActionsProps> = ({
           type="button"
           title="Share title"
           onClick={handleShareClick}
-          className="p-1.5 rounded-full text-slate-300 hover:bg-white/15 transition-colors"
+          className="p-1.5 rounded-full text-slate-300 hover:bg-white/15 transition-colors cursor-pointer"
         >
           <Share2 className="h-3.5 w-3.5" />
         </button>

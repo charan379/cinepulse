@@ -39,16 +39,18 @@ export const Navigation: React.FC<NavigationProps> = ({
       {/* Mobile & Desktop Main Header Bar */}
       <header className="sticky top-0 z-40 w-full glass-nav px-3 sm:px-6 py-2">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 sm:gap-3">
-          {/* Logo */}
+          {/* Premium Logo */}
           <div
             onClick={() => onTabChange('home')}
-            className="flex items-center gap-1.5 cursor-pointer transition-transform active:scale-95 shrink-0"
+            className="flex items-center gap-2 cursor-pointer transition-transform active:scale-95 shrink-0 group"
           >
-            <div className="flex h-7.5 w-7.5 sm:h-8 sm:w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 via-violet-600 to-pink-500 text-white shadow-md shadow-violet-500/20">
-              <Film className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-            </div>
-            <span className="text-sm sm:text-base font-extrabold tracking-tight text-foreground bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text">
-              CinePulse
+            <img
+              src="/icon.svg"
+              alt="CinePulse Logo"
+              className="h-8 w-8 sm:h-8.5 sm:w-8.5 rounded-xl shadow-md shadow-purple-500/20 transform group-hover:scale-105 transition-transform duration-300 object-cover"
+            />
+            <span className="text-base sm:text-lg font-black tracking-wider uppercase bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text text-transparent drop-shadow-xs font-sans">
+              Cine<span className="bg-gradient-to-r from-violet-500 via-purple-500 to-pink-500 bg-clip-text text-transparent font-extrabold">Pulse</span>
             </span>
           </div>
 
