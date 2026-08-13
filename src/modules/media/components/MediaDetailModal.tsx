@@ -72,10 +72,10 @@ export const MediaDetailModal: React.FC<MediaDetailModalProps> = ({
     item?.media_type === 'movie'
       ? 'movie'
       : item?.media_type === 'tv'
-      ? 'tv'
-      : item?.first_air_date || (item?.name && !item?.title)
-      ? 'tv'
-      : 'movie';
+        ? 'tv'
+        : item?.first_air_date || (item?.name && !item?.title)
+          ? 'tv'
+          : 'movie';
   const mediaId = item?.id || 0;
 
   // Fetch full details with append_to_response
@@ -122,7 +122,7 @@ export const MediaDetailModal: React.FC<MediaDetailModalProps> = ({
           {/* Header Hero Backdrop */}
           <div className="relative h-48 sm:h-64 w-full overflow-hidden bg-muted shrink-0">
             <img src={backdropUrl} alt={title} className="h-full w-full object-cover" />
-            
+
             {/* Adaptive Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-popover via-popover/40 to-transparent" />
 
@@ -387,6 +387,37 @@ export const MediaDetailModal: React.FC<MediaDetailModalProps> = ({
                       />
                       <span className="text-[10px] font-semibold text-foreground line-clamp-1">{c.name}</span>
                       <span className="text-[8px] text-muted-foreground line-clamp-1">{c.character}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Recommendations / More Like This */}
+            {detail?.recommendations?.results && detail.recommendations.results.length > 0 && (
+              <div className="space-y-2 pt-2 border-t border-border">
+                <h3 className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">More Like This</h3>
+                <div className="flex gap-2.5 overflow-x-auto pb-2">
+                  {detail.recommendations.results.slice(0, 12).map((rec) => (
+                    <div
+                      key={rec.id}
+                      onClick={() => onSelectMedia({ ...rec, media_type: rec.media_type || (rec.title ? 'movie' : 'tv') })}
+                      className="w-24 group cursor-pointer shrink-0 transition-transform hover:scale-105"
+                    >
+                      <img
+                        src={getTMDBImageUrl(rec.poster_path, 'w185')}
+                        alt={rec.title || rec.name || 'Title'}
+                        className="h-36 w-24 rounded-xl object-cover border border-border shadow-xs group-hover:border-primary transition-all mb-1"
+                      />
+                      <span className="text-[10px] font-bold text-foreground line-clamp-1 block">
+                        {rec.title || rec.name}
+                      </span>
+                      {rec.vote_average ? (
+                        <span className="text-[9px] text-muted-foreground flex items-center gap-0.5">
+                          <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />
+                          {rec.vote_average.toFixed(1)}
+                        </span>
+                      ) : null}
                     </div>
                   ))}
                 </div>

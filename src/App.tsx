@@ -15,7 +15,7 @@ import { MediaDetailModal } from '@/modules/media/components/MediaDetailModal';
 import { AdvancedFilterDrawer } from '@/modules/filters/components/AdvancedFilterDrawer';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Sparkles, TrendingUp, Star, Calendar, RefreshCw, AlertCircle } from 'lucide-react';
+import { Sparkles, TrendingUp, Star, Calendar, RefreshCw, AlertCircle, Bookmark } from 'lucide-react';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<'home' | 'lists' | 'discover'>('home');
@@ -92,6 +92,11 @@ export function App() {
 
   const trendingList = trendingData?.results || [];
 
+  const userWatchlistItems: TMDBMediaItem[] = [
+    ...watchlistMovies.map((m) => ({ ...m, media_type: 'movie' as const })),
+    ...watchlistTV.map((t) => ({ ...t, media_type: 'tv' as const })),
+  ];
+
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-200">
       {/* Apple Compact Navigation Shell */}
@@ -132,6 +137,43 @@ export function App() {
               <MediaHeroCarousel items={trendingList} onSelect={setSelectedMedia} />
             ) : (
               <Skeleton className="h-[320px] sm:h-[400px] w-full rounded-2xl" />
+            )}
+
+            {/* Continue Watching / My Watchlist Section for Logged-In Users */}
+            {isAuthenticated && userWatchlistItems.length > 0 && (
+              <section className="space-y-3 rounded-2xl border border-primary/25 bg-card/70 p-3.5 sm:p-4 backdrop-blur-md shadow-xs">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-base sm:text-lg font-extrabold tracking-tight text-foreground flex items-center gap-2">
+                    <Bookmark className="h-4.5 w-4.5 text-primary fill-primary/20" /> Continue Watching / My Watchlist
+                  </h2>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      updateFilter('quickFilter', 'watchlist');
+                      setActiveTab('discover');
+                    }}
+                    className="text-xs text-primary cursor-pointer h-7"
+                  >
+                    View All ({userWatchlistItems.length})
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 sm:gap-3.5">
+                  {userWatchlistItems.slice(0, 10).map((item) => (
+                    <MediaCard
+                      key={`${item.media_type}-${item.id}`}
+                      item={item}
+                      sessionId={sessionId}
+                      accountId={account?.id}
+                      onSelect={setSelectedMedia}
+                      onToggleWatchlist={toggleWatchlist}
+                      onToggleFavorite={toggleFavorite}
+                      onToggleSeen={toggleSeen}
+                    />
+                  ))}
+                </div>
+              </section>
             )}
 
             {/* Trending Now */}

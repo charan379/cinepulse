@@ -136,16 +136,16 @@ export const UserListsView: React.FC<UserListsViewProps> = ({
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full sm:w-auto">
           <TabsList className="w-full sm:w-auto bg-card border border-border overflow-x-auto flex-nowrap justify-start p-1 h-auto scrollbar-none">
             <TabsTrigger value="custom" className="gap-1.5 text-xs py-1.5 px-3 shrink-0 cursor-pointer">
-              <ListOrdered className="h-3.5 w-3.5 text-primary" /> Custom Lists ({lists.length})
+              <ListOrdered className="h-3.5 w-3.5" /> Custom Lists ({lists.length})
             </TabsTrigger>
             <TabsTrigger value="watchlist" className="gap-1.5 text-xs py-1.5 px-3 shrink-0 cursor-pointer">
-              <Bookmark className="h-3.5 w-3.5 text-primary" /> Watchlist
+              <Bookmark className="h-3.5 w-3.5" /> Watchlist
             </TabsTrigger>
             <TabsTrigger value="favorites" className="gap-1.5 text-xs py-1.5 px-3 shrink-0 cursor-pointer">
-              <Heart className="h-3.5 w-3.5 text-primary" /> Favorites
+              <Heart className="h-3.5 w-3.5" /> Favorites
             </TabsTrigger>
             <TabsTrigger value="seen" className="gap-1.5 text-xs py-1.5 px-3 shrink-0 cursor-pointer">
-              <Eye className="h-3.5 w-3.5 text-primary" /> Watched
+              <Eye className="h-3.5 w-3.5" /> Watched
             </TabsTrigger>
           </TabsList>
         </Tabs>
