@@ -407,6 +407,7 @@ export function App() {
 
       {/* Media Detail & Season Explorer Modal */}
       <MediaDetailModal
+        key={selectedMedia?.id}
         item={selectedMedia}
         isOpen={!!selectedMedia}
         onClose={() => setSelectedMedia(null)}
