@@ -4,25 +4,23 @@ const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p';
 
 // TMDB API v4 Read Access Token (from environment variable VITE_TMDB_READ_TOKEN)
-const TMDB_READ_TOKEN = import.meta.env.VITE_TMDB_READ_TOKEN || 
-  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiMWNjNTA2ZjJiYjI0ZTI3NDAyYWUwNWIxNDQ1MjE1NCIsIm5iZiI6MTY3MzUwMDE2OS4xNiwic3ViIjoiNjNiZjk2MDk4ZWZlNzMwMDk0ODhhMmFhIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.EGmJSBTzutC8qkAwRwpTjo6-V9WS50pjNgKfbm7REco";
+const TMDB_READ_TOKEN = import.meta.env.VITE_TMDB_READ_TOKEN || '';
 
 // Extract matching TMDB API Key (aud) dynamically from VITE_TMDB_READ_TOKEN
 function getAPIKeyFromReadToken(token: string): string {
-  if (import.meta.env.VITE_TMDB_API_KEY) {
-    return import.meta.env.VITE_TMDB_API_KEY;
-  }
   try {
-    const parts = token.split('.');
-    if (parts.length === 3) {
-      const base64Url = parts[1].replace(/-/g, '+').replace(/_/g, '/');
-      const payload = JSON.parse(atob(base64Url));
-      if (payload.aud) return payload.aud;
+    if (token) {
+      const parts = token.split('.');
+      if (parts.length === 3) {
+        const base64Url = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+        const payload = JSON.parse(atob(base64Url));
+        if (payload.aud) return payload.aud;
+      }
     }
   } catch (e) {
     console.warn('Failed to parse API key from read token:', e);
   }
-  return "b1cc506f2bb24e27402ae05b14452154";
+  return '';
 }
 
 const TMDB_API_KEY = getAPIKeyFromReadToken(TMDB_READ_TOKEN);
