@@ -132,7 +132,7 @@ export const MediaDetailModal: React.FC<MediaDetailModalProps> = ({
                 <img
                   src={posterUrl}
                   alt={title}
-                  className="h-24 w-16 sm:h-32 sm:w-22 rounded-xl object-cover border border-border shadow-lg -mb-4 shrink-0"
+                  className="h-24 w-16 sm:h-32 sm:w-22 rounded-xl object-cover border border-border shadow-lg -mb-2 shrink-0"
                 />
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-1.5">

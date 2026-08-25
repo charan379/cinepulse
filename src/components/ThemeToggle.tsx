@@ -10,14 +10,18 @@ import {
 import { Sun, Moon, Laptop } from 'lucide-react';
 
 export function ThemeToggle() {
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="h-8 w-8 rounded-xl border-border bg-card hover:bg-muted cursor-pointer">
-          <Sun className="h-3.5 w-3.5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-amber-500" />
-          <Moon className="absolute h-3.5 w-3.5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-primary" />
+          {theme === "light" ? <Sun className="h-3.5 w-3.5 transition-all rotate-0 scale-125 text-amber-500" />
+            : null}
+          {theme === "dark" ? <Moon className="absolute h-3.5 w-3.5 rotate-0 transition-all scale-125 text-primary" />
+            : null}
+          {theme === "system" ? <Laptop className="absolute h-3.5 w-3.5 rotate-0 scale-125 transition-all text-muted-foreground" />
+            : null}
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>

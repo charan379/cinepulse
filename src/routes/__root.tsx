@@ -1,5 +1,6 @@
 import React from 'react';
 import { createRootRoute, Outlet, HeadContent } from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 
 export const Route = createRootRoute({
   head: () => ({
@@ -36,6 +37,7 @@ function RootComponent() {
       <div className="min-h-screen bg-background text-foreground flex flex-col font-sans">
         <Outlet />
       </div>
+      <TanStackRouterDevtools position="bottom-right" />
     </>
   );
 }

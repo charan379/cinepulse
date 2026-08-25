@@ -48,9 +48,8 @@ export const MediaCard: React.FC<MediaCardProps> = ({
 
         {/* Media Format Badge */}
         <div className="absolute top-1.5 left-1.5 z-10">
-          <Badge variant="glass" className="font-semibold text-[9px] px-1.5 py-0.2 uppercase tracking-wider bg-background/80 text-foreground border-border/50">
-            {mediaType === 'movie' ? <Film className="h-2.5 w-2.5 text-primary mr-1 inline" /> : <Tv className="h-2.5 w-2.5 text-primary mr-1 inline" />}
-            {mediaType}
+          <Badge variant="secondary" className="flex justify-center items-baseline gap-1 font-semibold text-[9px] p-1 uppercase tracking-wider text-foreground">
+            {mediaType === 'movie' ? <Film className="h-3.5 w-3.5 text-violet-500" /> : <Tv className="h-3.5 w-3.5 text-violet-500" />}
           </Badge>
         </div>
 
@@ -58,25 +57,11 @@ export const MediaCard: React.FC<MediaCardProps> = ({
         {item.vote_average > 0 && (
           <div className="absolute top-1.5 right-1.5 z-10">
             <Badge variant="gold" className="flex items-center gap-0.5 font-bold text-[10px] px-1.5 py-0.2">
-              <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />
+              <Star className="h-2.5 w-2.5 text-amber-400" />
               {item.vote_average.toFixed(1)}
             </Badge>
           </div>
         )}
-
-        {/* Quick Action Buttons Overlay */}
-        <div className="absolute bottom-1.5 right-1.5 z-10 opacity-90 group-hover:opacity-100 transition-opacity">
-          <QuickMediaActions
-            mediaType={mediaType}
-            mediaId={item.id}
-            mediaTitle={title}
-            sessionId={sessionId}
-            accountId={accountId}
-            onToggleWatchlist={onToggleWatchlist}
-            onToggleFavorite={onToggleFavorite}
-            onToggleSeen={onToggleSeen}
-          />
-        </div>
       </div>
 
       {/* Card Metadata */}
