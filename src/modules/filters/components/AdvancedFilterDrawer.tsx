@@ -161,14 +161,6 @@ export const AdvancedFilterDrawer: React.FC<AdvancedFilterDrawerProps> = ({
               >
                 My Favorites
               </Button>
-              <Button
-                variant={draft.quickFilter === 'seen' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => updateDraft('quickFilter', 'seen')}
-                className="justify-start text-xs cursor-pointer"
-              >
-                Have Seen
-              </Button>
             </div>
           </div>
 

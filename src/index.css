@@ -1,61 +1,65 @@
 @import "tailwindcss";
 
 :root {
-  /* Apple Light Mode Theme Tokens (Apple HIG) */
-  --background: hsl(240 6% 96%);
-  /* #f4f4f7 */
-  --foreground: hsl(240 10% 8%);
-  --card: hsl(0 0% 100%);
-  --card-foreground: hsl(240 10% 8%);
+  /* Light Mode Theme Tokens */
+  --background: hsl(210 17% 96%); /* #f4f6f9 - Clean light canvas */
+  --foreground: hsl(210 11% 15%); /* #212529 - Charcoal text */
+  --card: hsl(0 0% 100%); /* #ffffff - Solid crisp card */
+  --card-foreground: hsl(210 11% 15%);
   --popover: hsl(0 0% 100%);
-  --popover-foreground: hsl(240 10% 8%);
+  --popover-foreground: hsl(210 11% 15%);
 
-  /* Apple Primary: Rich Violet Indigo Gradient Accent */
-  --primary: hsl(252 87% 62%);
-  /* Apple TV+ Deep Indigo Violet */
+  /* Primary: Elegant Minimal Slate Accent */
+  --primary: hsl(215 28% 36%); /* #42546e - Refined Slate Navy */
   --primary-foreground: hsl(0 0% 100%);
 
-  --secondary: hsl(240 5% 92%);
-  --secondary-foreground: hsl(240 10% 8%);
-  --muted: hsl(240 5% 93%);
-  --muted-foreground: hsl(240 4% 46%);
-  --accent: hsl(252 87% 96%);
-  --accent-foreground: hsl(252 87% 45%);
-  --destructive: hsl(346 84% 61%);
-  --destructive-foreground: hsl(0 0% 98%);
-  --border: hsl(240 5% 88%);
-  --input: hsl(240 5% 88%);
-  --ring: hsl(252 87% 62%);
-  --radius: 0.85rem;
+  --secondary: hsl(208 7% 46%); /* #6c757d - Slate Gray */
+  --secondary-foreground: hsl(0 0% 100%);
+  --muted: hsl(210 16% 93%); /* #e9ecef */
+  --muted-foreground: hsl(208 7% 46%); /* #6c757d */
+  --accent: hsl(210 14% 89%);
+  --accent-foreground: hsl(215 28% 36%);
+  --destructive: hsl(354 70% 54%); /* #dc3545 - Danger */
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(210 14% 89%); /* #dee2e6 - Crisp 1px border */
+  --input: hsl(210 14% 89%);
+  --ring: hsl(215 28% 36%);
+  --radius: 0.25rem; /* 4px crisp radius */
+
+  /* Extended Palette */
+  --success: hsl(134 61% 41%); /* #28a745 */
+  --warning: hsl(45 100% 51%); /* #ffc107 */
+  --info: hsl(188 78% 41%); /* #17a2b8 */
 }
 
 .dark {
-  /* Apple Dark Mode Theme Tokens (Apple HIG) */
-  --background: hsl(240 10% 4%);
-  /* Apple Dark #09090b */
-  --foreground: hsl(0 0% 98%);
-  --card: hsl(240 6% 9%);
-  /* Apple Card #141417 */
-  --card-foreground: hsl(0 0% 98%);
-  --popover: hsl(240 6% 8%);
-  --popover-foreground: hsl(0 0% 98%);
+  /* Dark Mode Theme Tokens */
+  --background: hsl(210 14% 13%); /* #1e2227 - Solid dark canvas */
+  --foreground: hsl(210 17% 98%); /* #f8f9fa */
+  --card: hsl(210 10% 23%); /* #343a40 - Solid dark card */
+  --card-foreground: hsl(210 17% 98%);
+  --popover: hsl(210 10% 21%);
+  --popover-foreground: hsl(210 17% 98%);
 
-  /* Apple Dark Primary */
-  --primary: hsl(252 87% 65%);
-  /* Electric Violet Indigo */
-  --primary-foreground: hsl(0 0% 100%);
+  /* Dark Primary: Elegant Minimal Luminous Slate */
+  --primary: hsl(215 30% 72%); /* #9cb4cf - Soft Muted Steel Slate */
+  --primary-foreground: hsl(210 14% 13%);
 
-  --secondary: hsl(240 5% 15%);
-  --secondary-foreground: hsl(0 0% 98%);
-  --muted: hsl(240 5% 13%);
-  --muted-foreground: hsl(240 5% 65%);
-  --accent: hsl(252 87% 15%);
-  --accent-foreground: hsl(252 87% 85%);
-  --destructive: hsl(346 84% 55%);
-  --destructive-foreground: hsl(0 0% 98%);
-  --border: hsl(240 5% 16%);
-  --input: hsl(240 5% 16%);
-  --ring: hsl(252 87% 65%);
+  --secondary: hsl(208 7% 46%); /* #6c757d */
+  --secondary-foreground: hsl(0 0% 100%);
+  --muted: hsl(210 9% 27%); /* #3f474e */
+  --muted-foreground: hsl(210 11% 71%); /* #adb5bd */
+  --accent: hsl(210 9% 29%);
+  --accent-foreground: hsl(210 17% 98%);
+  --destructive: hsl(354 70% 54%); /* #dc3545 */
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(210 10% 33%); /* #4b545c - Solid dark border */
+  --input: hsl(210 10% 33%);
+  --ring: hsl(215 30% 72%);
+
+  --success: hsl(134 61% 41%);
+  --warning: hsl(45 100% 51%);
+  --info: hsl(188 78% 41%);
 }
 
 @theme inline {
@@ -90,10 +94,10 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
-    transition: background-color 0.25s ease, color 0.25s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   button,
@@ -106,64 +110,62 @@
   }
 }
 
-/* Apple Frosted Glass Utilities */
-.glass-panel {
-  background: var(--card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border);
+/* Card Styles & Outline Top Accents */
+.card-outline-primary {
+  border-top: 3px solid var(--primary);
 }
 
-.glass-nav {
-  background: rgba(244, 244, 247, 0.85);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+.card-outline-info {
+  border-top: 3px solid #17a2b8;
+}
+
+.card-outline-success {
+  border-top: 3px solid #28a745;
+}
+
+.card-outline-warning {
+  border-top: 3px solid #ffc107;
+}
+
+.card-outline-danger {
+  border-top: 3px solid #dc3545;
+}
+
+.card-outline-secondary {
+  border-top: 3px solid #6c757d;
+}
+
+/* Top Navigation & Navbar */
+.app-nav {
+  background-color: var(--card);
   border-bottom: 1px solid var(--border);
 }
 
-.dark .glass-nav {
-  background: rgba(9, 9, 11, 0.85);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid var(--border);
-}
-
-/* Apple Liquid Button Styles */
-.btn-apple-primary {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
-  color: #ffffff;
-  box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.35);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-apple-primary:hover {
-  filter: brightness(1.08);
-  box-shadow: 0 6px 20px 0 rgba(139, 92, 246, 0.45);
-}
-
-/* Apple Segmented Control Container */
-.apple-segmented-list {
-  align-items: center;
-  gap: 2px;
-  padding: 3px;
-  background: var(--muted);
-  border-radius: 12px;
+/* Poster & Catalog Collection Frame */
+.catalog-poster-frame {
   border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* Custom Minimal Scrollbars */
+.catalog-poster-frame:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Solid Scrollbars */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--muted);
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--border);
-  border-radius: 9999px;
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {

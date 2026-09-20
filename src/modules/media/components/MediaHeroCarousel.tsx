@@ -30,39 +30,38 @@ export const MediaHeroCarousel: React.FC<MediaHeroCarouselProps> = ({ items, onS
   const backdropUrl = getTMDBBackdropUrl(currentItem.backdrop_path, 'original');
 
   return (
-    <div className="relative w-full h-[320px] sm:h-[400px] rounded-2xl overflow-hidden border border-border shadow-md group">
+    <div className="relative w-full h-[280px] sm:h-[340px] rounded overflow-hidden border border-border bg-card shadow-xs group card-outline-primary">
       {/* Backdrop Image */}
       <img
         key={currentItem.id}
         src={backdropUrl}
         alt={title}
-        className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700"
+        className="absolute inset-0 h-full w-full object-cover"
       />
 
-      {/* Adaptive Theme Gradient Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent w-full sm:w-3/4" />
+      {/* Solid Dark Tint Overlay */}
+      <div className="absolute inset-0 bg-black/65" />
 
       {/* Content Container */}
-      <div className="relative z-10 flex flex-col justify-end h-full p-5 sm:p-8 max-w-2xl space-y-2">
+      <div className="relative z-10 flex flex-col justify-end h-full p-4 sm:p-6 max-w-xl space-y-2 text-white">
         <div className="flex items-center gap-2">
-          <Badge variant="default" className="text-[10px] px-2.5 py-0.5 uppercase tracking-wider font-semibold">
-            <Sparkles className="h-3 w-3 mr-1 inline" /> Featured
+          <Badge variant="default" className="text-[10px] px-2 py-0.5 uppercase tracking-wider font-semibold">
+            <Sparkles className="h-3 w-3 mr-1 inline" /> Spotlight
           </Badge>
-          <Badge variant="outline" className="text-[10px] bg-background/60 backdrop-blur-md">
+          <Badge variant="outline" className="text-[10px] text-white border-white/30 bg-black/40">
             {mediaType === 'movie' ? <Film className="h-3 w-3 mr-1 inline" /> : <Tv className="h-3 w-3 mr-1 inline" />}
             {mediaType === 'movie' ? 'Movie' : 'TV Series'}
           </Badge>
         </div>
 
-        <h1 className="text-xl sm:text-3xl font-extrabold text-foreground tracking-tight line-clamp-1">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white line-clamp-1">
           {title}
         </h1>
 
         {currentItem.vote_average > 0 && (
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span className="flex items-center text-amber-500 font-bold">
-              <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400 mr-1" />
+          <div className="flex items-center gap-2 text-xs text-slate-300">
+            <span className="flex items-center text-amber-400 font-bold">
+              <Star className="h-3.5 w-3.5 fill-current mr-1" />
               {currentItem.vote_average.toFixed(1)} / 10
             </span>
             <span>•</span>
@@ -70,13 +69,13 @@ export const MediaHeroCarousel: React.FC<MediaHeroCarouselProps> = ({ items, onS
           </div>
         )}
 
-        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+        <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed">
           {currentItem.overview}
         </p>
 
         <div className="pt-1">
-          <Button variant="default" size="sm" onClick={() => onSelect(currentItem)} className="cursor-pointer text-xs h-8 px-4">
-            <Info className="h-4 w-4" /> View Details
+          <Button variant="default" size="sm" onClick={() => onSelect(currentItem)} className="cursor-pointer text-xs h-7 px-3">
+            <Info className="h-3.5 w-3.5 mr-1" /> View Details
           </Button>
         </div>
       </div>
@@ -87,8 +86,8 @@ export const MediaHeroCarousel: React.FC<MediaHeroCarouselProps> = ({ items, onS
           <button
             key={idx}
             onClick={() => setCurrentIndex(idx)}
-            className={`h-1.5 rounded-full transition-all cursor-pointer ${
-              idx === currentIndex ? 'w-5 bg-primary' : 'w-1.5 bg-foreground/30 hover:bg-foreground/60'
+            className={`h-1.5 rounded-xs transition-colors cursor-pointer ${
+              idx === currentIndex ? 'w-4 bg-primary' : 'w-2 bg-white/40 hover:bg-white/70'
             }`}
           />
         ))}

@@ -3,21 +3,27 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center rounded-xs px-2 py-0.5 text-[11px] font-semibold transition-colors focus:outline-none focus:ring-1 focus:ring-ring select-none border",
   {
     variants: {
       variant: {
         default:
-          "border-transparent bg-primary/15 text-primary border-primary/30",
+          "border-transparent bg-primary text-primary-foreground",
         secondary:
           "border-transparent bg-secondary text-secondary-foreground",
         destructive:
-          "border-transparent bg-destructive/15 text-destructive border-destructive/30",
+          "border-transparent bg-destructive text-destructive-foreground",
+        success:
+          "border-transparent bg-[#28a745] text-white",
+        warning:
+          "border-transparent bg-[#ffc107] text-[#212529]",
+        info:
+          "border-transparent bg-[#17a2b8] text-white",
         outline: "border-border text-foreground bg-card",
-        glass: "bg-card/80 border border-border text-foreground backdrop-blur-md shadow-sm",
-        gold: "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30",
-        cyan: "bg-primary/15 text-primary border-primary/30",
-        violet: "bg-primary/15 text-primary border-primary/30",
+        glass: "border-border text-foreground bg-card",
+        gold: "border-transparent bg-[#ffc107] text-[#212529]",
+        cyan: "border-transparent bg-[#17a2b8] text-white",
+        violet: "border-transparent bg-primary text-primary-foreground",
       },
     },
     defaultVariants: {

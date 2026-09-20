@@ -1,55 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
-  <defs>
-    <!-- Background Midnight Deep Gradient -->
-    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0F172A" />
-      <stop offset="50%" stop-color="#0B0D19" />
-      <stop offset="100%" stop-color="#1E1B4B" />
-    </linearGradient>
+  <!-- Solid Dark Slate Base -->
+  <rect width="512" height="512" rx="64" fill="#0f172a" />
+  
+  <!-- Subtle 1px Border -->
+  <rect x="2" y="2" width="508" height="508" rx="62" stroke="#334155" stroke-width="4" fill="none" />
 
-    <!-- Neon Prism Ring Gradient -->
-    <linearGradient id="prism-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#6366F1" />
-      <stop offset="40%" stop-color="#A855F7" />
-      <stop offset="75%" stop-color="#EC4899" />
-      <stop offset="100%" stop-color="#F43F5E" />
-    </linearGradient>
-
-    <!-- Gloss Highlight Gradient -->
-    <linearGradient id="gloss-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.25" />
-      <stop offset="40%" stop-color="#FFFFFF" stop-opacity="0.05" />
-      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
-    </linearGradient>
-
-    <!-- Inner Shield Glow Filter -->
-    <filter id="glow-filter" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="16" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
-  </defs>
-
-  <!-- Base Apple Squircle -->
-  <rect width="512" height="512" rx="116" fill="url(#bg-grad)" />
-
-  <!-- Outer Neon Prism Glow Ring -->
-  <circle cx="256" cy="256" r="168" stroke="url(#prism-grad)" stroke-width="24" filter="url(#glow-filter)" opacity="0.9" />
-
-  <!-- Glass Inner Backdrop Circle -->
-  <circle cx="256" cy="256" r="132" fill="#0F172A" fill-opacity="0.6" stroke="#FFFFFF" stroke-opacity="0.15" stroke-width="3" />
-
-  <!-- Dynamic Play Pulse Emblem -->
-  <g transform="translate(16, 0)">
-    <!-- Play Triangle -->
-    <path d="M224 186 L324 256 L224 326 Z" fill="url(#prism-grad)" />
-    <!-- Audio/Cinema Pulse Wave -->
-    <path d="M168 256 C168 220 184 190 208 172" stroke="#6366F1" stroke-width="12" stroke-linecap="round" fill="none" opacity="0.8" />
-    <path d="M344 172 C368 190 384 220 384 256 C384 292 368 322 344 340" stroke="#EC4899" stroke-width="12" stroke-linecap="round" fill="none" opacity="0.8" />
+  <!-- Film Reel Disc in White/Navy -->
+  <g transform="translate(180, 110)">
+    <circle cx="120" cy="120" r="105" fill="#0f172a" stroke="#ffffff" stroke-width="16" />
+    <circle cx="120" cy="120" r="30" fill="#ffffff" />
+    <circle cx="75" cy="80" r="16" fill="#ffffff" />
+    <circle cx="165" cy="80" r="16" fill="#ffffff" />
+    <circle cx="120" cy="170" r="16" fill="#ffffff" />
+    <circle cx="75" cy="150" r="14" fill="#ffffff" />
+    <circle cx="165" cy="150" r="14" fill="#ffffff" />
+    <path d="M210 215 C190 235 150 235 150 235 L120 235" stroke="#ffffff" stroke-width="12" stroke-linecap="round" />
   </g>
 
-  <!-- Apple Glass Specular Arc -->
-  <path d="M512 116 C512 51.933 460.067 0 396 0 L116 0 C51.933 0 0 51.933 0 116 L0 220 Q256 300 512 220 Z" fill="url(#glow-grad)" />
+  <!-- Solid Cinema Play Triangle Frame -->
+  <path d="M140 145 L320 256 L140 367 Z" fill="#0f172a" stroke="#ffffff" stroke-width="20" stroke-linejoin="round" />
+  <path d="M175 190 L275 256 L175 322 Z" fill="#ffffff" />
 
-  <!-- Subtle Rim Light -->
-  <rect width="510" height="510" x="1" y="1" rx="115" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="2" fill="none" />
+  <!-- Dynamic Electric Blue Pulse Wave (CinePulse signature) -->
+  <path d="M60 256 L130 256 L160 200 L195 320 L230 110 L265 400 L300 210 L335 290 L365 240 L400 256 L452 256" 
+        stroke="#007bff" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+
+  <!-- Secondary Glow Dots on Pulse Peaks -->
+  <circle cx="230" cy="110" r="8" fill="#38bdf8" />
+  <circle cx="265" cy="400" r="8" fill="#38bdf8" />
 </svg>

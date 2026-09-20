@@ -10,8 +10,6 @@ interface UseInfiniteMediaProps {
   watchlistTV?: TMDBMediaItem[];
   favoriteMovies?: TMDBMediaItem[];
   favoriteTV?: TMDBMediaItem[];
-  seenMovies?: TMDBMediaItem[];
-  seenTV?: TMDBMediaItem[];
 }
 
 export function useInfiniteMedia({
@@ -22,10 +20,8 @@ export function useInfiniteMedia({
   watchlistTV = [],
   favoriteMovies = [],
   favoriteTV = [],
-  seenMovies = [],
-  seenTV = [],
 }: UseInfiniteMediaProps) {
-  // If quickFilter is active (watchlist, favorites, or seen), return from user's account state
+  // If quickFilter is active (watchlist or favorites), return from user's account state
   const isAccountListFilter = filters.quickFilter !== 'all';
 
   const queryKey = [
@@ -58,67 +54,64 @@ export function useInfiniteMedia({
 
       const discoverParams = {
         sort_by: filters.sortBy || 'popularity.desc',
-        with_genres: filters.genreId || undefined,
-        with_cast: filters.personId || undefined,
+        with_genres: filters.genreId ? String(filters.genreId) : undefined,
+        with_people: filters.personId ? String(filters.personId) : undefined,
         with_original_language: filters.originalLanguage || undefined,
-        certification_country: filters.certification ? (filters.certificationCountry || 'US') : undefined,
+        certification_country: filters.certification ? filters.certificationCountry : undefined,
         certification: filters.certification || undefined,
       };
 
-      // If 'all' media types selected, fetch both movies and TV series and interleave results
-      if (filters.mediaType === 'all') {
-        const [movieRes, tvRes] = await Promise.all([
-          tmdbService.getDiscover('movie', discoverParams, pageParam).catch(() => null),
-          tmdbService.getDiscover('tv', discoverParams, pageParam).catch(() => null),
+      if (filters.mediaType === 'movie') {
+        const res = await tmdbService.discoverMovies(pageParam, discoverParams);
+        return {
+          ...res,
+          results: res.results.map((m) => ({ ...m, media_type: 'movie' as const })),
+        };
+      } else if (filters.mediaType === 'tv') {
+        const res = await tmdbService.discoverTV(pageParam, discoverParams);
+        return {
+          ...res,
+          results: res.results.map((t) => ({ ...t, media_type: 'tv' as const })),
+        };
+      } else {
+        // 'all': fetch pageParam for movies & tv and merge
+        const [moviesRes, tvRes] = await Promise.all([
+          tmdbService.discoverMovies(pageParam, discoverParams),
+          tmdbService.discoverTV(pageParam, discoverParams),
         ]);
 
-        const movies = (movieRes?.results || []).map((m) => ({ ...m, media_type: 'movie' as const }));
-        const tvs = (tvRes?.results || []).map((t) => ({ ...t, media_type: 'tv' as const }));
+        const merged = [
+          ...moviesRes.results.map((m) => ({ ...m, media_type: 'movie' as const })),
+          ...tvRes.results.map((t) => ({ ...t, media_type: 'tv' as const })),
+        ];
 
-        // Interleave movies and TV series
-        const interleaved: TMDBMediaItem[] = [];
-        const maxLen = Math.max(movies.length, tvs.length);
-        for (let i = 0; i < maxLen; i++) {
-          if (i < movies.length) interleaved.push(movies[i]);
-          if (i < tvs.length) interleaved.push(tvs[i]);
-        }
+        // Sort combined results by popularity or vote_average
+        merged.sort((a, b) => {
+          if (filters.sortBy.includes('vote_average')) {
+            return (b.vote_average || 0) - (a.vote_average || 0);
+          }
+          return (b.popularity || 0) - (a.popularity || 0);
+        });
 
         return {
           page: pageParam,
-          results: interleaved,
-          total_pages: Math.max(movieRes?.total_pages || 1, tvRes?.total_pages || 1),
-          total_results: (movieRes?.total_results || 0) + (tvRes?.total_results || 0),
+          results: merged,
+          total_pages: Math.max(moviesRes.total_pages, tvRes.total_pages),
+          total_results: moviesRes.total_results + tvRes.total_results,
         };
       }
-
-      // Single mediaType discover endpoint
-      const discoverRes = await tmdbService.getDiscover(
-        filters.mediaType,
-        discoverParams,
-        pageParam
-      );
-
-      const defaultType: 'movie' | 'tv' = filters.mediaType === 'tv' ? 'tv' : 'movie';
-
-      return {
-        ...discoverRes,
-        results: (discoverRes.results || []).map((item) => ({
-          ...item,
-          media_type: item.media_type || defaultType,
-        })),
-      };
     },
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (lastPage.page < lastPage.total_pages && lastPage.page < 500) {
         return lastPage.page + 1;
       }
       return undefined;
     },
-    initialPageParam: 1,
     enabled: !isAccountListFilter,
   });
 
-  // Handle local filtered account list if quickFilter is active
+  // If viewing account list (watchlist or favorites)
   if (isAccountListFilter) {
     let rawItems: TMDBMediaItem[] = [];
     if (filters.quickFilter === 'watchlist') {
@@ -141,16 +134,6 @@ export function useInfiniteMedia({
               ...favoriteMovies.map((m) => ({ ...m, media_type: 'movie' as const })),
               ...favoriteTV.map((t) => ({ ...t, media_type: 'tv' as const })),
             ];
-    } else if (filters.quickFilter === 'seen') {
-      rawItems =
-        filters.mediaType === 'movie'
-          ? seenMovies.map((m) => ({ ...m, media_type: 'movie' as const }))
-          : filters.mediaType === 'tv'
-          ? seenTV.map((t) => ({ ...t, media_type: 'tv' as const }))
-          : [
-              ...seenMovies.map((m) => ({ ...m, media_type: 'movie' as const })),
-              ...seenTV.map((t) => ({ ...t, media_type: 'tv' as const })),
-            ];
     }
 
     // Apply additional in-memory genre/language/mediaType filtering
@@ -171,16 +154,25 @@ export function useInfiniteMedia({
         (item) => item.original_language === filters.originalLanguage
       );
     }
-    if (filters.searchQuery) {
-      const q = filters.searchQuery.toLowerCase();
-      filteredItems = filteredItems.filter((item) =>
-        (item.title || item.name || '').toLowerCase().includes(q)
+    if (filters.certification) {
+      filteredItems = filteredItems.filter(
+        (item) => item.certification === filters.certification
       );
+    }
+    if (filters.searchQuery.trim().length > 0) {
+      const q = filters.searchQuery.toLowerCase();
+      filteredItems = filteredItems.filter((item) => {
+        const title = (item.title || item.name || '').toLowerCase();
+        return title.includes(q);
+      });
     }
 
     return {
       items: filteredItems,
       isLoading: false,
+      isError: false,
+      error: null,
+      refetch: () => Promise.resolve(),
       isFetchingNextPage: false,
       hasNextPage: false,
       fetchNextPage: () => {},
@@ -207,6 +199,9 @@ export function useInfiniteMedia({
   return {
     items,
     isLoading: infiniteQuery.isLoading,
+    isError: infiniteQuery.isError,
+    error: infiniteQuery.error,
+    refetch: infiniteQuery.refetch,
     isFetchingNextPage: infiniteQuery.isFetchingNextPage,
     hasNextPage: infiniteQuery.hasNextPage,
     fetchNextPage: infiniteQuery.fetchNextPage,

@@ -3,7 +3,7 @@ import { getDefaultUserRegion } from '@/lib/geo-region';
 
 export interface FilterState {
   mediaType: 'all' | 'movie' | 'tv';
-  quickFilter: 'all' | 'watchlist' | 'favorites' | 'seen';
+  quickFilter: 'all' | 'watchlist' | 'favorites';
   genreId: number | null;
   personId: number | null;
   personName: string;

@@ -61,6 +61,7 @@ export interface TMDBMediaItem {
   vote_count: number;
   origin_country?: string[];
   original_language?: string;
+  certification?: string;
 }
 
 export interface TMDBList {
@@ -566,6 +567,7 @@ export const tmdbService = {
       with_genres: filters.with_genres,
       with_cast: filters.with_cast,
       with_crew: filters.with_crew,
+      with_people: filters.with_people,
       with_original_language: filters.with_original_language,
       primary_release_year: filters.primary_release_year,
       first_air_date_year: filters.first_air_date_year,
@@ -574,7 +576,16 @@ export const tmdbService = {
       certification_country: filters.certification_country,
       certification: filters.certification,
       'vote_average.gte': filters.vote_average_gte,
+      ...filters,
     });
+  },
+
+  async discoverMovies(page = 1, filters: Record<string, any> = {}): Promise<PaginatedResponse<TMDBMediaItem>> {
+    return this.getDiscover('movie', filters, page);
+  },
+
+  async discoverTV(page = 1, filters: Record<string, any> = {}): Promise<PaginatedResponse<TMDBMediaItem>> {
+    return this.getDiscover('tv', filters, page);
   },
 
   async getCertifications(mediaType: 'movie' | 'tv'): Promise<Record<string, { certification: string; meaning: string; order: number }[]>> {

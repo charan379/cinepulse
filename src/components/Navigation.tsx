@@ -5,7 +5,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { MobileNavDrawer } from '@/components/MobileNavDrawer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Film, Search, Filter, Home, ListOrdered, Sparkles, LogIn, Menu } from 'lucide-react';
+import { Search, Filter, Home, ListOrdered, Sparkles, LogIn, Menu } from 'lucide-react';
 
 interface NavigationProps {
   currentTab: 'home' | 'lists' | 'discover';
@@ -36,46 +36,47 @@ export const Navigation: React.FC<NavigationProps> = ({
 
   return (
     <>
-      {/* Mobile & Desktop Main Header Bar */}
-      <header className="sticky top-0 z-40 w-full glass-nav px-3 sm:px-6 py-2">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 sm:gap-3">
-          {/* Premium Logo */}
+      {/* Main Header Bar */}
+      <header className="sticky top-0 z-40 w-full app-nav px-3 sm:px-6 py-2">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 sm:gap-4">
+          {/* Brand Logo */}
           <div
             onClick={() => onTabChange('home')}
-            className="flex items-center gap-2 cursor-pointer transition-transform active:scale-95 shrink-0 group"
+            className="flex items-center gap-2 cursor-pointer select-none shrink-0"
           >
             <img
-              src="/icon.svg"
+              src="/icon.png"
               alt="CinePulse Logo"
-              className="h-8 w-8 sm:h-8.5 sm:w-8.5 rounded-xl shadow-md shadow-purple-500/20 transform group-hover:scale-105 transition-transform duration-300 object-cover"
+              className="h-8 w-8 rounded-lg object-cover border border-border"
             />
-            <span className="text-base sm:text-lg font-black tracking-wider uppercase bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text text-transparent drop-shadow-xs font-sans">
-              Cine<span className="bg-gradient-to-r from-violet-500 via-purple-500 to-pink-500 bg-clip-text text-transparent font-extrabold">Pulse</span>
+            <span className="text-base font-bold tracking-tight text-foreground">
+              <span className="text-primary font-black">Cine</span>Pulse
             </span>
           </div>
 
           {/* Desktop Search Input */}
-          <div className="flex-1 max-w-md hidden md:block">
+          <div className="flex-1 max-w-sm hidden md:block">
             <div className="relative">
               <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Search movies, TV shows, actors..."
+                placeholder="Search movies, series, cast..."
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="pl-8 h-8 text-xs bg-muted/60 border-border/60 focus:bg-card focus:border-primary transition-all"
+                className="pl-8"
               />
             </div>
           </div>
 
-          {/* Desktop Nav Segmented Controls */}
-          <nav className="hidden md:inline-flex items-center apple-segmented-list">
+          {/* Desktop Nav Controls */}
+          <nav className="hidden md:inline-flex items-center gap-1 bg-muted p-0.5 rounded border border-border">
             <button
               onClick={() => onTabChange('home')}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${currentTab === 'home'
-                ? 'bg-card text-foreground shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
-                }`}
+              className={`flex items-center gap-1 px-2.5 py-1 rounded text-xs font-semibold transition-colors cursor-pointer ${
+                currentTab === 'home'
+                  ? 'bg-card text-foreground shadow-xs border border-border/80'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
             >
               <Home className="h-3.5 w-3.5" /> Home
             </button>
@@ -83,10 +84,11 @@ export const Navigation: React.FC<NavigationProps> = ({
             {isAuthenticated && (
               <button
                 onClick={() => onTabChange('lists')}
-                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${currentTab === 'lists'
-                  ? 'bg-card text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-                  }`}
+                className={`flex items-center gap-1 px-2.5 py-1 rounded text-xs font-semibold transition-colors cursor-pointer ${
+                  currentTab === 'lists'
+                    ? 'bg-card text-foreground shadow-xs border border-border/80'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
               >
                 <ListOrdered className="h-3.5 w-3.5" /> My Lists
               </button>
@@ -94,12 +96,13 @@ export const Navigation: React.FC<NavigationProps> = ({
 
             <button
               onClick={() => onTabChange('discover')}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${currentTab === 'discover'
-                ? 'bg-card text-foreground shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
-                }`}
+              className={`flex items-center gap-1 px-2.5 py-1 rounded text-xs font-semibold transition-colors cursor-pointer ${
+                currentTab === 'discover'
+                  ? 'bg-card text-foreground shadow-xs border border-border/80'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
             >
-              <Sparkles className="h-3.5 w-3.5" /> Discover
+              <Sparkles className="h-3.5 w-3.5" /> Catalog
             </button>
           </nav>
 
@@ -108,7 +111,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             <ThemeToggle />
 
             <Button
-              variant={isFiltered ? 'glow' : 'outline'}
+              variant={isFiltered ? 'default' : 'outline'}
               size="sm"
               onClick={onOpenFilterDrawer}
               className="relative text-xs h-8 px-2.5"
@@ -116,7 +119,7 @@ export const Navigation: React.FC<NavigationProps> = ({
               <Filter className="h-3.5 w-3.5" />
               <span>Filters</span>
               {isFiltered && (
-                <span className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-primary animate-ping" />
+                <span className="h-2 w-2 rounded-full bg-current ml-1 opacity-90" />
               )}
             </Button>
 
@@ -135,7 +138,7 @@ export const Navigation: React.FC<NavigationProps> = ({
               variant="outline"
               size="icon"
               onClick={() => setIsMobileDrawerOpen(true)}
-              className="h-8 w-8 rounded-xl border-border bg-card cursor-pointer"
+              className="h-8 w-8 rounded border-border bg-card cursor-pointer"
               title="Open Navigation Menu"
             >
               <Menu className="h-4 w-4 text-foreground" />
@@ -144,7 +147,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         </div>
 
         {/* Mobile Inline Search Bar */}
-        <div className="mt-1.5 block md:hidden">
+        <div className="mt-2 block md:hidden">
           <div className="relative">
             <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
             <Input
@@ -152,7 +155,7 @@ export const Navigation: React.FC<NavigationProps> = ({
               placeholder="Search titles, cast..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="pl-8 h-8 text-xs bg-muted/60 border-border/60"
+              className="pl-8 h-8 text-xs bg-muted/50 border-border"
             />
           </div>
         </div>
@@ -172,15 +175,16 @@ export const Navigation: React.FC<NavigationProps> = ({
         isFiltered={isFiltered}
       />
 
-      {/* Mobile Bottom Floating Navigation Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 block md:hidden glass-nav p-1 pb-safe border-t border-border">
+      {/* Mobile Bottom Navigation Bar */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 block md:hidden bg-card p-1 pb-safe border-t border-border shadow-xs">
         <div className="flex items-center justify-around">
           <button
             onClick={() => onTabChange('home')}
-            className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-[10px] font-medium transition-all cursor-pointer ${currentTab === 'home'
-              ? 'text-primary font-bold bg-primary/10'
-              : 'text-muted-foreground hover:text-foreground'
-              }`}
+            className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded text-[10px] font-medium transition-colors cursor-pointer ${
+              currentTab === 'home'
+                ? 'text-primary font-bold bg-primary/10'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
           >
             <Home className="h-4 w-4" />
             <span>Home</span>
@@ -189,10 +193,11 @@ export const Navigation: React.FC<NavigationProps> = ({
           {isAuthenticated && (
             <button
               onClick={() => onTabChange('lists')}
-              className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-[10px] font-medium transition-all cursor-pointer ${currentTab === 'lists'
-                ? 'text-primary font-bold bg-primary/10'
-                : 'text-muted-foreground hover:text-foreground'
-                }`}
+              className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded text-[10px] font-medium transition-colors cursor-pointer ${
+                currentTab === 'lists'
+                  ? 'text-primary font-bold bg-primary/10'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
             >
               <ListOrdered className="h-4 w-4" />
               <span>Lists</span>
@@ -201,18 +206,19 @@ export const Navigation: React.FC<NavigationProps> = ({
 
           <button
             onClick={() => onTabChange('discover')}
-            className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-[10px] font-medium transition-all cursor-pointer ${currentTab === 'discover'
-              ? 'text-primary font-bold bg-primary/10'
-              : 'text-muted-foreground hover:text-foreground'
-              }`}
+            className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded text-[10px] font-medium transition-colors cursor-pointer ${
+              currentTab === 'discover'
+                ? 'text-primary font-bold bg-primary/10'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
           >
             <Sparkles className="h-4 w-4" />
-            <span>Discover</span>
+            <span>Catalog</span>
           </button>
 
           <button
             onClick={() => setIsMobileDrawerOpen(true)}
-            className="flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-[10px] font-medium text-muted-foreground hover:text-foreground transition-all cursor-pointer"
+            className="flex flex-col items-center gap-0.5 py-1 px-3 rounded text-[10px] font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
           >
             <Menu className="h-4 w-4" />
             <span>Menu</span>

@@ -39,19 +39,6 @@ export function useUserLists(accountId?: number | null, sessionId?: string | nul
     enabled,
   });
 
-  // Rated/Seen Movies & TV (Single Page 1 Fetch)
-  const ratedMoviesQuery = useQuery({
-    queryKey: ['rated-movies', accountId, sessionId],
-    queryFn: () => tmdbService.getRated(accountId!, sessionId!, 'movies', 1),
-    enabled,
-  });
-
-  const ratedTVQuery = useQuery({
-    queryKey: ['rated-tv', accountId, sessionId],
-    queryFn: () => tmdbService.getRated(accountId!, sessionId!, 'tv', 1),
-    enabled,
-  });
-
   // Create Custom List Mutation
   const createListMutation = useMutation({
     mutationFn: ({ name, description }: { name: string; description?: string }) =>
@@ -77,6 +64,7 @@ export function useUserLists(accountId?: number | null, sessionId?: string | nul
       queryClient.invalidateQueries({ queryKey: ['watchlist-movies', accountId, sessionId] });
       queryClient.invalidateQueries({ queryKey: ['watchlist-tv', accountId, sessionId] });
       queryClient.invalidateQueries({ queryKey: ['account-state', variables.mediaType, variables.mediaId] });
+      queryClient.invalidateQueries({ queryKey: ['account-states', variables.mediaType, variables.mediaId, sessionId] });
     },
   });
 
@@ -88,22 +76,7 @@ export function useUserLists(accountId?: number | null, sessionId?: string | nul
       queryClient.invalidateQueries({ queryKey: ['favorite-movies', accountId, sessionId] });
       queryClient.invalidateQueries({ queryKey: ['favorite-tv', accountId, sessionId] });
       queryClient.invalidateQueries({ queryKey: ['account-state', variables.mediaType, variables.mediaId] });
-    },
-  });
-
-  // Toggle Seen/Rated Mutation
-  const toggleSeenMutation = useMutation({
-    mutationFn: ({ mediaType, mediaId, isSeen }: { mediaType: 'movie' | 'tv'; mediaId: number; isSeen: boolean }) => {
-      if (isSeen) {
-        return tmdbService.rateMedia(sessionId!, mediaType, mediaId, 10);
-      } else {
-        return tmdbService.deleteRating(sessionId!, mediaType, mediaId);
-      }
-    },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['rated-movies', accountId, sessionId] });
-      queryClient.invalidateQueries({ queryKey: ['rated-tv', accountId, sessionId] });
-      queryClient.invalidateQueries({ queryKey: ['account-state', variables.mediaType, variables.mediaId] });
+      queryClient.invalidateQueries({ queryKey: ['account-states', variables.mediaType, variables.mediaId, sessionId] });
     },
   });
 
@@ -112,8 +85,6 @@ export function useUserLists(accountId?: number | null, sessionId?: string | nul
   const watchlistTV: TMDBMediaItem[] = watchlistTVQuery.data?.results || [];
   const favoriteMovies: TMDBMediaItem[] = favoriteMoviesQuery.data?.results || [];
   const favoriteTV: TMDBMediaItem[] = favoriteTVQuery.data?.results || [];
-  const seenMovies: TMDBMediaItem[] = ratedMoviesQuery.data?.results || [];
-  const seenTV: TMDBMediaItem[] = ratedTVQuery.data?.results || [];
 
   return {
     lists,
@@ -121,18 +92,17 @@ export function useUserLists(accountId?: number | null, sessionId?: string | nul
     watchlistTV,
     favoriteMovies,
     favoriteTV,
-    seenMovies,
-    seenTV,
     watchlistTotalPages: Math.max(watchlistMoviesQuery.data?.total_pages || 1, watchlistTVQuery.data?.total_pages || 1),
     favoriteTotalPages: Math.max(favoriteMoviesQuery.data?.total_pages || 1, favoriteTVQuery.data?.total_pages || 1),
-    seenTotalPages: Math.max(ratedMoviesQuery.data?.total_pages || 1, ratedTVQuery.data?.total_pages || 1),
     isLoading: listsQuery.isLoading || watchlistMoviesQuery.isLoading,
+    isError: listsQuery.isError || watchlistMoviesQuery.isError,
+    error: listsQuery.error || watchlistMoviesQuery.error,
+    refetchLists: listsQuery.refetch,
     isCreatingList: createListMutation.isPending,
     createList: (name: string, description: string = '') =>
       createListMutation.mutateAsync({ name, description }),
     deleteList: deleteListMutation.mutateAsync,
     toggleWatchlist: toggleWatchlistMutation.mutateAsync,
     toggleFavorite: toggleFavoriteMutation.mutateAsync,
-    toggleSeen: toggleSeenMutation.mutateAsync,
   };
 }

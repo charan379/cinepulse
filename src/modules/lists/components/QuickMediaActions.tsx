@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { tmdbService } from '@/lib/tmdb';
 import { ShareMediaModal } from '@/components/ShareMediaModal';
 import { Button } from '@/components/ui/button';
-import { Eye, Bookmark, Heart, Share2, Loader2 } from 'lucide-react';
+import { Bookmark, Heart, Share2, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface QuickMediaActionsProps {
@@ -14,9 +14,9 @@ interface QuickMediaActionsProps {
   accountId?: number | null;
   onToggleWatchlist: (params: { mediaType: 'movie' | 'tv'; mediaId: number; watchlist: boolean }) => Promise<any>;
   onToggleFavorite: (params: { mediaType: 'movie' | 'tv'; mediaId: number; favorite: boolean }) => Promise<any>;
-  onToggleSeen: (params: { mediaType: 'movie' | 'tv'; mediaId: number; isSeen: boolean }) => Promise<any>;
   size?: 'sm' | 'default' | 'lg';
   variant?: 'compact' | 'full';
+  enabled?: boolean; // Controls whether to load account state (only on hover or modal)
 }
 
 export const QuickMediaActions: React.FC<QuickMediaActionsProps> = ({
@@ -26,26 +26,30 @@ export const QuickMediaActions: React.FC<QuickMediaActionsProps> = ({
   sessionId,
   onToggleWatchlist,
   onToggleFavorite,
-  onToggleSeen,
   size = 'sm',
   variant = 'compact',
+  enabled = false,
 }) => {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isPendingWatchlist, setIsPendingWatchlist] = useState(false);
   const [isPendingFavorite, setIsPendingFavorite] = useState(false);
-  const [isPendingSeen, setIsPendingSeen] = useState(false);
+  const [hasHovered, setHasHovered] = useState(false);
 
-  // Account state query (is this movie in user's watchlist, favorite, or rated/seen)
+  // ONLY load account states when:
+  // 1. In modal (variant === 'full'), OR
+  // 2. Parent card is hovered (enabled === true), OR
+  // 3. This action bar was directly hovered (hasHovered === true)
+  const shouldFetch = !!sessionId && (variant === 'full' || enabled || hasHovered);
+
   const { data: accountState, isLoading, refetch } = useQuery({
     queryKey: ['account-states', mediaType, mediaId, sessionId],
     queryFn: () => tmdbService.getAccountStates(mediaType, mediaId, sessionId!),
-    enabled: !!sessionId,
-    staleTime: 1000 * 60 * 2,
+    enabled: shouldFetch,
+    staleTime: 1000 * 60 * 5,
   });
 
   const isFavorite = !!accountState?.favorite;
   const isWatchlist = !!accountState?.watchlist;
-  const isSeen = !!accountState?.rated;
 
   const handleWatchlistClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -75,32 +79,10 @@ export const QuickMediaActions: React.FC<QuickMediaActionsProps> = ({
     }
   };
 
-  const handleSeenClick = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!sessionId || isPendingSeen) return;
-    setIsPendingSeen(true);
-    try {
-      await onToggleSeen({ mediaType, mediaId, isSeen: !isSeen });
-      await refetch();
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsPendingSeen(false);
-    }
-  };
-
   const handleShareClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsShareModalOpen(true);
   };
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center gap-1 opacity-50">
-        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
 
   const mediaItemData = {
     id: mediaId,
@@ -123,30 +105,15 @@ export const QuickMediaActions: React.FC<QuickMediaActionsProps> = ({
             <>
               <Button
                 size={size}
-                variant={isSeen ? 'glow' : 'outline'}
-                onClick={handleSeenClick}
-                disabled={isPendingSeen}
-                className={cn(isSeen && 'from-cyan-600 to-blue-600 shadow-cyan-500/25')}
-              >
-                {isPendingSeen ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <Eye className={cn('h-4 w-4', isSeen && 'fill-current')} />
-                )}
-                <span>{isSeen ? 'Watched' : 'Mark Watched'}</span>
-              </Button>
-
-              <Button
-                size={size}
                 variant={isWatchlist ? 'default' : 'outline'}
                 onClick={handleWatchlistClick}
-                disabled={isPendingWatchlist}
-                className={cn(isWatchlist && 'bg-indigo-600 hover:bg-indigo-500 text-white')}
+                disabled={isPendingWatchlist || isLoading}
+                className={cn(isWatchlist && 'bg-primary text-primary-foreground border-primary')}
               >
-                {isPendingWatchlist ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                {isPendingWatchlist || isLoading ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 ) : (
-                  <Bookmark className={cn('h-4 w-4', isWatchlist && 'fill-current')} />
+                  <Bookmark className={cn('h-3.5 w-3.5', isWatchlist && 'fill-current')} />
                 )}
                 <span>{isWatchlist ? 'In Watchlist' : 'Watchlist'}</span>
               </Button>
@@ -155,21 +122,21 @@ export const QuickMediaActions: React.FC<QuickMediaActionsProps> = ({
                 size={size}
                 variant={isFavorite ? 'destructive' : 'outline'}
                 onClick={handleFavoriteClick}
-                disabled={isPendingFavorite}
-                className={cn(isFavorite && 'bg-pink-600 hover:bg-pink-500 text-white border-pink-500/40')}
+                disabled={isPendingFavorite || isLoading}
+                className={cn(isFavorite && 'bg-destructive text-destructive-foreground border-destructive')}
               >
-                {isPendingFavorite ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                {isPendingFavorite || isLoading ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 ) : (
-                  <Heart className={cn('h-4 w-4', isFavorite && 'fill-current')} />
+                  <Heart className={cn('h-3.5 w-3.5', isFavorite && 'fill-current')} />
                 )}
-                <span>{isFavorite ? 'Favorite' : 'Favorite'}</span>
+                <span>{isFavorite ? 'In Favorites' : 'Favorite'}</span>
               </Button>
             </>
           )}
 
           <Button size={size} variant="outline" onClick={handleShareClick}>
-            <Share2 className="h-4 w-4" />
+            <Share2 className="h-3.5 w-3.5" />
             <span>Share</span>
           </Button>
         </div>
@@ -186,59 +153,43 @@ export const QuickMediaActions: React.FC<QuickMediaActionsProps> = ({
   return (
     <>
       <div
-        className="flex items-center gap-1 bg-black/60 backdrop-blur-md p-1 rounded-full border border-white/10"
+        className="flex items-center gap-1 bg-card/95 p-1 rounded border border-border shadow-xs"
         onClick={(e) => e.stopPropagation()}
+        onMouseEnter={() => setHasHovered(true)}
       >
         {sessionId && (
           <>
-            <button
-              type="button"
-              disabled={isPendingSeen}
-              title={isSeen ? 'Watched' : 'Mark as Seen'}
-              onClick={handleSeenClick}
-              className={cn(
-                'p-1.5 rounded-full transition-colors disabled:opacity-50 cursor-pointer',
-                isSeen ? 'bg-cyan-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-white/15'
-              )}
-            >
-              {isPendingSeen ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
-              ) : (
-                <Eye className="h-3.5 w-3.5" />
-              )}
-            </button>
-
             <button
               type="button"
               disabled={isPendingWatchlist}
               title={isWatchlist ? 'In Watchlist' : 'Add to Watchlist'}
               onClick={handleWatchlistClick}
               className={cn(
-                'p-1.5 rounded-full transition-colors disabled:opacity-50 cursor-pointer',
-                isWatchlist ? 'bg-indigo-500 text-white font-bold' : 'text-slate-300 hover:bg-white/15'
+                'p-1.5 rounded transition-colors disabled:opacity-50 cursor-pointer',
+                isWatchlist ? 'bg-primary text-primary-foreground font-bold' : 'text-muted-foreground hover:bg-muted hover:text-foreground'
               )}
             >
-              {isPendingWatchlist ? (
+              {isPendingWatchlist || (isLoading && shouldFetch) ? (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
               ) : (
-                <Bookmark className="h-3.5 w-3.5" />
+                <Bookmark className={cn('h-3.5 w-3.5', isWatchlist && 'fill-current')} />
               )}
             </button>
 
             <button
               type="button"
               disabled={isPendingFavorite}
-              title={isFavorite ? 'Favorite' : 'Mark Favorite'}
+              title={isFavorite ? 'In Favorites' : 'Mark Favorite'}
               onClick={handleFavoriteClick}
               className={cn(
-                'p-1.5 rounded-full transition-colors disabled:opacity-50 cursor-pointer',
-                isFavorite ? 'bg-pink-500 text-white font-bold' : 'text-slate-300 hover:bg-white/15'
+                'p-1.5 rounded transition-colors disabled:opacity-50 cursor-pointer',
+                isFavorite ? 'bg-destructive text-destructive-foreground font-bold' : 'text-muted-foreground hover:bg-muted hover:text-foreground'
               )}
             >
-              {isPendingFavorite ? (
+              {isPendingFavorite || (isLoading && shouldFetch) ? (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
               ) : (
-                <Heart className="h-3.5 w-3.5" />
+                <Heart className={cn('h-3.5 w-3.5', isFavorite && 'fill-current')} />
               )}
             </button>
           </>
@@ -248,7 +199,7 @@ export const QuickMediaActions: React.FC<QuickMediaActionsProps> = ({
           type="button"
           title="Share title"
           onClick={handleShareClick}
-          className="p-1.5 rounded-full text-slate-300 hover:bg-white/15 transition-colors cursor-pointer"
+          className="p-1.5 rounded text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
         >
           <Share2 className="h-3.5 w-3.5" />
         </button>
