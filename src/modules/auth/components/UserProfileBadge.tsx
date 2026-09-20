@@ -9,12 +9,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { LogOut, Heart, Bookmark } from 'lucide-react';
+import { LogOut, Heart, Bookmark, ListOrdered } from 'lucide-react';
 
 interface UserProfileBadgeProps {
   account: TMDBAccount;
   onLogout: () => void;
-  onNavigateToTab?: (tab: string) => void;
+  onNavigateToTab?: (tab: 'home' | 'lists' | 'discover', subTab?: 'custom' | 'watchlist' | 'favorites') => void;
 }
 
 export const UserProfileBadge: React.FC<UserProfileBadgeProps> = ({ account, onLogout, onNavigateToTab }) => {
@@ -43,11 +43,15 @@ export const UserProfileBadge: React.FC<UserProfileBadgeProps> = ({ account, onL
         <DropdownMenuSeparator />
         {onNavigateToTab && (
           <>
-            <DropdownMenuItem onClick={() => onNavigateToTab('lists')} className="cursor-pointer">
+            <DropdownMenuItem onClick={() => onNavigateToTab('lists', 'custom')} className="cursor-pointer">
+              <ListOrdered className="h-3.5 w-3.5" />
+              <span>Custom Lists</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onNavigateToTab('lists', 'watchlist')} className="cursor-pointer">
               <Bookmark className="h-3.5 w-3.5 text-primary" />
               <span>My Watchlist</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onNavigateToTab('lists')} className="cursor-pointer">
+            <DropdownMenuItem onClick={() => onNavigateToTab('lists', 'favorites')} className="cursor-pointer">
               <Heart className="h-3.5 w-3.5 text-destructive" />
               <span>My Favorites</span>
             </DropdownMenuItem>

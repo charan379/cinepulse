@@ -3,13 +3,13 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { TMDBAccount } from '@/lib/tmdb';
-import { Home, ListOrdered, Sparkles, Filter, LogIn, LogOut } from 'lucide-react';
+import { Home, ListOrdered, Sparkles, Filter, LogIn, LogOut, Bookmark, Heart } from 'lucide-react';
 
 interface MobileNavDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   currentTab: 'home' | 'lists' | 'discover';
-  onTabChange: (tab: 'home' | 'lists' | 'discover') => void;
+  onTabChange: (tab: 'home' | 'lists' | 'discover', subTab?: 'custom' | 'watchlist' | 'favorites') => void;
   onOpenFilterDrawer: () => void;
   isAuthenticated: boolean;
   account: TMDBAccount | null;
@@ -30,8 +30,8 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
   onLogout,
   isFiltered,
 }) => {
-  const handleNavClick = (tab: 'home' | 'lists' | 'discover') => {
-    onTabChange(tab);
+  const handleNavClick = (tab: 'home' | 'lists' | 'discover', subTab?: 'custom' | 'watchlist' | 'favorites') => {
+    onTabChange(tab, subTab);
     onClose();
   };
 
@@ -50,7 +50,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
               <img
                 src="/icon.png"
                 alt="CinePulse Logo"
-                className="h-8 w-8 rounded object-cover border border-border"
+                className="h-8 w-8 rounded-lg object-cover border border-border"
               />
               <div className="text-left">
                 <SheetTitle className="text-base font-bold tracking-tight text-foreground">
@@ -106,18 +106,40 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
               </button>
 
               {isAuthenticated && (
-                <button
-                  onClick={() => handleNavClick('lists')}
-                  className={`flex items-center justify-between w-full p-2 rounded text-xs font-semibold transition-colors cursor-pointer ${
-                    currentTab === 'lists'
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-foreground hover:bg-muted'
-                  }`}
-                >
-                  <span className="flex items-center gap-2">
-                    <ListOrdered className="h-4 w-4" /> My Lists & Collections
-                  </span>
-                </button>
+                <div className="space-y-1">
+                  <button
+                    onClick={() => handleNavClick('lists', 'custom')}
+                    className={`flex items-center justify-between w-full p-2 rounded text-xs font-semibold transition-colors cursor-pointer ${
+                      currentTab === 'lists'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'text-foreground hover:bg-muted'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <ListOrdered className="h-4 w-4" /> My Lists & Collections
+                    </span>
+                  </button>
+                  <div className="pl-6 flex flex-wrap gap-1.5 pt-0.5">
+                    <button
+                      onClick={() => handleNavClick('lists', 'custom')}
+                      className="text-[11px] text-muted-foreground hover:text-foreground flex items-center gap-1 cursor-pointer py-1 px-1.5 rounded hover:bg-muted"
+                    >
+                      <ListOrdered className="h-3 w-3" /> Custom Lists
+                    </button>
+                    <button
+                      onClick={() => handleNavClick('lists', 'watchlist')}
+                      className="text-[11px] text-muted-foreground hover:text-foreground flex items-center gap-1 cursor-pointer py-1 px-1.5 rounded hover:bg-muted"
+                    >
+                      <Bookmark className="h-3 w-3 text-primary" /> Watchlist
+                    </button>
+                    <button
+                      onClick={() => handleNavClick('lists', 'favorites')}
+                      className="text-[11px] text-muted-foreground hover:text-foreground flex items-center gap-1 cursor-pointer py-1 px-1.5 rounded hover:bg-muted"
+                    >
+                      <Heart className="h-3 w-3 text-destructive" /> Favorites
+                    </button>
+                  </div>
+                </div>
               )}
 
               <button

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { tmdbService, TMDBList, TMDBMediaItem, getTMDBImageUrl } from '@/lib/tmdb';
 import { MediaCard } from '@/modules/media/components/MediaCard';
@@ -16,6 +16,8 @@ interface UserListsViewProps {
   favoriteTV: TMDBMediaItem[];
   sessionId?: string | null;
   accountId?: number | null;
+  activeSubTab?: 'custom' | 'watchlist' | 'favorites';
+  onSubTabChange?: (tab: 'custom' | 'watchlist' | 'favorites') => void;
   onOpenCreateModal: () => void;
   onDeleteList: (listId: number) => Promise<any>;
   onSelectMedia: (item: TMDBMediaItem) => void;
@@ -27,6 +29,8 @@ export const UserListsView: React.FC<UserListsViewProps> = ({
   lists,
   sessionId,
   accountId,
+  activeSubTab = 'custom',
+  onSubTabChange,
   onOpenCreateModal,
   onDeleteList,
   onSelectMedia,
@@ -34,8 +38,17 @@ export const UserListsView: React.FC<UserListsViewProps> = ({
   onToggleFavorite,
 }) => {
   const [selectedListId, setSelectedListId] = useState<number | null>(null);
-  const [activeTab, setActiveTab] = useState<string>('custom');
+  const [activeTab, setActiveTab] = useState<string>(activeSubTab);
   const [currentPage, setCurrentPage] = useState<number>(1);
+
+  // Sync activeTab whenever activeSubTab prop changes
+  useEffect(() => {
+    if (activeSubTab) {
+      setActiveTab(activeSubTab);
+      setSelectedListId(null);
+      setCurrentPage(1);
+    }
+  }, [activeSubTab]);
 
   // Server-paginated query for selected custom list using TMDB v4 GET /4/list/{list_id}?page={page} API
   const {
@@ -102,6 +115,7 @@ export const UserListsView: React.FC<UserListsViewProps> = ({
 
   const handleTabChange = (val: string) => {
     setActiveTab(val);
+    onSubTabChange?.(val as 'custom' | 'watchlist' | 'favorites');
     setSelectedListId(null);
     setCurrentPage(1);
   };

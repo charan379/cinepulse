@@ -20,6 +20,7 @@ import { Sparkles, TrendingUp, Star, Calendar, RefreshCw, AlertCircle, Bookmark,
 
 export function App() {
   const [activeTab, setActiveTab] = useState<'home' | 'lists' | 'discover'>('home');
+  const [listsSubTab, setListsSubTab] = useState<'custom' | 'watchlist' | 'favorites'>('custom');
   const [catalogViewMode, setCatalogViewMode] = useState<'grid' | 'table'>('grid');
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
   const [isCreateListModalOpen, setIsCreateListModalOpen] = useState(false);
@@ -102,9 +103,12 @@ export function App() {
       {/* Main Top Navigation Header */}
       <Navigation
         currentTab={activeTab}
-        onTabChange={(tab) => {
+        onTabChange={(tab, subTab) => {
           resetFilters();
           setActiveTab(tab);
+          if (subTab) {
+            setListsSubTab(subTab);
+          }
         }}
         searchQuery={filters.searchQuery}
         onSearchChange={(q) => {
@@ -368,6 +372,8 @@ export function App() {
                 favoriteTV={favoriteTV}
                 sessionId={sessionId}
                 accountId={account?.id}
+                activeSubTab={listsSubTab}
+                onSubTabChange={setListsSubTab}
                 onOpenCreateModal={() => setIsCreateListModalOpen(true)}
                 onDeleteList={deleteList}
                 onSelectMedia={setSelectedMedia}

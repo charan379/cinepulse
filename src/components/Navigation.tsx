@@ -9,7 +9,7 @@ import { Search, Filter, Home, ListOrdered, Sparkles, LogIn, Menu } from 'lucide
 
 interface NavigationProps {
   currentTab: 'home' | 'lists' | 'discover';
-  onTabChange: (tab: 'home' | 'lists' | 'discover') => void;
+  onTabChange: (tab: 'home' | 'lists' | 'discover', subTab?: 'custom' | 'watchlist' | 'favorites') => void;
   searchQuery: string;
   onSearchChange: (q: string) => void;
   onOpenFilterDrawer: () => void;
@@ -124,7 +124,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             </Button>
 
             {isAuthenticated && account ? (
-              <UserProfileBadge account={account} onLogout={onLogout} onNavigateToTab={() => onTabChange('lists')} />
+              <UserProfileBadge account={account} onLogout={onLogout} onNavigateToTab={(tab, subTab) => onTabChange(tab, subTab)} />
             ) : (
               <Button variant="default" size="sm" onClick={onLogin} className="text-xs h-8 px-3">
                 <LogIn className="h-3.5 w-3.5" /> Login
