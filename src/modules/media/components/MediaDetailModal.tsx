@@ -130,7 +130,7 @@ export const MediaDetailModal: React.FC<MediaDetailModalProps> = ({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-        <DialogContent className="flex flex-col max-h-[92vh] sm:max-h-[88vh] w-[calc(100vw-1rem)] sm:w-full max-w-3xl p-0 overflow-hidden border border-border bg-card shadow-lg sm:rounded gap-0">
+        <DialogContent className="flex flex-col max-h-[92dvh] sm:max-h-[88dvh] w-[calc(100dvw-1rem)] sm:w-full max-w-3xl p-0 overflow-hidden border border-border bg-card shadow-lg sm:rounded gap-0">
           <div className="flex-1 min-h-0 overflow-y-auto w-full overscroll-contain">
             {/* Header Banner */}
             <div className="relative border-b border-border bg-muted">
