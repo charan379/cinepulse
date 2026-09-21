@@ -112,7 +112,7 @@ export const MediaCard: React.FC<MediaCardProps> = ({
         {/* Media Format Badge (Top Left) */}
         <div className="absolute top-1.5 left-1.5 z-10">
           <Badge variant="secondary" className="font-semibold text-[9px] px-1 py-0.5 uppercase tracking-wider">
-            {mediaType === 'movie' ? <Film className="h-3 w-3 text-foreground" /> : <Tv className="h-3 w-3 text-foreground" />}
+            {mediaType === 'movie' ? <Film className="h-3 w-3" /> : <Tv className="h-3 w-3" />}
           </Badge>
         </div>
 
