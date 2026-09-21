@@ -124,7 +124,7 @@ export function App() {
       />
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 space-y-5 pb-20 md:pb-8">
+      <main className="flex-1 w-full mx-auto px-3 sm:px-6 py-4 space-y-5 pb-20 md:pb-8">
         {/* Auth status error banner if any */}
         {authError && (
           <div className="flex items-center gap-2 rounded border border-destructive/40 bg-destructive/10 p-3 text-xs text-destructive font-medium">
