@@ -38,7 +38,7 @@ export const Navigation: React.FC<NavigationProps> = ({
     <>
       {/* Main Header Bar */}
       <header className="sticky top-0 z-40 w-full app-nav px-3 sm:px-6 py-2">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 sm:gap-4">
+        <div className="mx-auto flex items-center justify-between gap-2 sm:gap-4">
           {/* Brand Logo */}
           <div
             onClick={() => onTabChange('home')}
